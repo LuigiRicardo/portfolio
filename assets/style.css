@@ -1,13 +1,69 @@
 body {
-    background-color: #020659;
-    color: #F2AFA0;
-}
-a {
-    color: #F2AFA0;
+    background-color: #0D0D0D;
+    color: #F2EA79;
+    font-family: "Montserrat";
+    text-align: justify;
 }
 
+h1 {
+    font-size: 26px;
+}
+
+h2 {
+    font-size: 19px;
+}
+
+a:visited {
+    color: #D9AD5B;
+}
 .logo {
     width: auto;
     height: 20px;
     margin: 8px;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 300px;
+    padding: 40px;
+}
+
+.content {
+    flex: 1;
+    padding: 60px;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+.sidebar button.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+button {
+    color: #0D0D0D;
+    background-color: #F2EA79;
+    height: 30px;
+    border-radius: 0 18px 0 18px;
+    border-style: solid;
+    border-color: #D9AD5B;
+    margin-bottom: 5px;
+    font: normal 500 16px Montserrat
+}
+#profile_pic {
+    height: 250px;
+    width: auto;
+    border-radius: 125px;
+    border-style: solid;
+    border-color: #D9AD5B;
 }
