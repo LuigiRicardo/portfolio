@@ -3,14 +3,16 @@ body {
     color: #F2EA79;
     font-family: "Montserrat";
     text-align: justify;
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
 h1 {
-    font-size: 26px;
+    font-size: 1.8rem;
 }
 
 h2 {
-    font-size: 19px;
+    font-size: 1.4rem;
 }
 
 a:visited {
@@ -24,17 +26,15 @@ a:visited {
 
 .container {
     display: flex;
-    height: 100vh;
+    flex-direction: column;
 }
 
-.sidebar {
-    width: 300px;
-    padding: 40px;
+.header {
+    padding: 24px;
 }
 
 .content {
-    flex: 1;
-    padding: 60px;
+    padding: 24px;
 }
 
 .section {
@@ -50,15 +50,19 @@ a:visited {
     text-decoration: underline;
 }
 
-button {
+nav button {
+    padding: 10px 14px;
     color: #0D0D0D;
     background-color: #F2EA79;
-    height: 30px;
-    border-radius: 0 18px 0 18px;
     border-style: solid;
     border-color: #D9AD5B;
-    margin-bottom: 5px;
     font: normal 500 16px Montserrat
+}
+
+nav ul {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
 }
 #profile_pic {
     height: 250px;
