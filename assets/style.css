@@ -14,6 +14,9 @@ body {
 
 .sidebar {
     padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .content {
@@ -28,8 +31,12 @@ h2 {
     font-size: 1.4rem;
 }
 
+a {
+    color:#F2EA79
+}
+
 a:visited {
-    color: #D9AD5B;
+    color: #585959;
 }
 .logo {
     height: 70px;
@@ -45,7 +52,7 @@ a:visited {
     display: block;
 }
 
-.sidebar button.active {
+nav button.active {
     font-weight: bold;
     text-decoration: underline;
 }
@@ -57,7 +64,8 @@ nav button {
     border-radius: 0 1.8em;
     border-style: solid;
     border-color: #D9AD5B;
-    font: normal 500 16px Montserrat
+    font: normal 500 16px "Montserrat";
+    align-self: flex-start;
 }
 
 nav ul {
