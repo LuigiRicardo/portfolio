@@ -1,4 +1,4 @@
-const buttons = document.querySelectorAll('.sidebar button');
+const buttons = document.querySelectorAll('.header button');
 const sections = document.querySelectorAll('.section');
 
 //Script responsible for handling visibility changes and navigation when buttons are clicked.
