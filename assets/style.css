@@ -63,7 +63,9 @@ nav ul {
     display: flex;
     gap: 12px;
     margin-top: 20px;
+    list-style: none;
 }
+
 #profile_pic {
     height: 250px;
     width: auto;
