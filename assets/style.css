@@ -186,3 +186,105 @@ nav button.active {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
+
+/* =====================
+    Projects (GitHub API)
+===================== */
+
+.projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.project-card {
+    border: 1px solid #D9AD5B;
+    border-radius: 12px;
+    padding: 12px;
+    background-color: rgba(217, 173, 91, 0.05);
+}
+
+.project-card h3 {
+    margin: 0 0 4px;
+    font-size: 1rem;
+}
+
+.project-card p {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.project-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+.project-meta a {
+    text-decoration: underline;
+}
+
+/* Skeleton Loading */
+
+.skeleton {
+    position: relative;
+    overflow: hidden;
+}
+
+.skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(242, 234, 121, 0.15),
+        transparent
+    );
+    animation: skeleton-loading 1.2s infinite;
+}
+
+.skeleton-title {
+    height: 16px;
+    width: 60%;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    background-color: rgba(217, 173, 91, 0.25);
+}
+
+.skeleton-text {
+    height: 12px;
+    width: 100%;
+    margin-bottom: 6px;
+    border-radius: 6px;
+    background-color: rgba(217, 173, 91, 0.2);
+}
+
+.skeleton-text.short {
+    width: 70%;
+}
+
+.skeleton-meta {
+    height: 12px;
+    width: 40%;
+    margin-top: 10px;
+    border-radius: 6px;
+    background-color: rgba(217, 173, 91, 0.2);
+}
+
+@keyframes skeleton-loading {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+.loading,
+.error {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
