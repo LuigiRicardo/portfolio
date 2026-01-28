@@ -1,22 +1,28 @@
-const buttons = document.querySelectorAll('nav button');
-const sections = document.querySelectorAll('.section');
+const buttons = document.querySelectorAll("nav button");
+const sections = document.querySelectorAll(".section");
 
-//Script responsible for handling visibility changes and navigation when buttons are clicked.
+let currentSection = document.querySelector(".section.active") || sections[0];
+
 buttons.forEach(button => {
-    button.addEventListener('click', () => {
-        const target = button.dataset.section;
-    
-    buttons.forEach(btn => btn.classList.remove('active'));
+    button.addEventListener("click", () => {
+        const targetId = button.dataset.section;
+        const nextSection = document.getElementById(targetId);
 
-    sections.forEach(section => {
-        section.classList.remove('active');
-    });
+        if (!nextSection || nextSection === currentSection) return;
 
-            button.classList.add('active');
-            
-    document.getElementById(target).classList.add('active');
+        const change = () => {
+            currentSection.classList.remove("active");
+            nextSection.classList.add("active");
+            currentSection = nextSection;
+
+            buttons.forEach(b => b.classList.remove("active"));
+            button.classList.add("active");
+        };
+
+        if (document.startViewTransition) {
+            document.startViewTransition(change);
+        } else {
+            change();
+        }
     });
 });
-
-buttons.forEach(btn => btn.classList.remove('active'));
-button.classList.add('active');
