@@ -11,6 +11,12 @@ let currentSection = document.querySelector(".section.active");
 
 // SEGURANÇA: estado inicial
 
+if (!("IntersectionObserver" in window)) {
+    document.querySelectorAll(".observe").forEach(el => {
+        el.classList.add("is-visible");
+    });
+}
+
 if (!currentSection && sections.length > 0) {
     currentSection = sections[0];
     currentSection.classList.add("active");
@@ -26,6 +32,7 @@ buttons.forEach(button => {
         if (!nextSection || nextSection === currentSection) return;
 
         const changeSection = () => {
+            
             // conteúdo
             currentSection.classList.remove("active");
             currentSection.setAttribute("hidden", "");
@@ -52,6 +59,11 @@ buttons.forEach(button => {
             if (targetId === "projects") {
                 loadProjects();
             }
+
+            // Reativa observação após troca de seção
+            requestAnimationFrame(() => {
+            observeElements();
+            });
         };
 
         if (document.startViewTransition) {
@@ -158,7 +170,7 @@ function renderProjects(repos) {
         return;
     }
 
-    // 🔽 ORDENA POR DATA DE ATUALIZAÇÃO (MAIS RECENTES PRIMEIRO)
+    // ORDENA POR DATA DE ATUALIZAÇÃO (MAIS RECENTES PRIMEIRO)
     repos.sort((a, b) => {
         return new Date(b.updated_at) - new Date(a.updated_at);
     });
@@ -166,7 +178,7 @@ function renderProjects(repos) {
     repos.forEach(repo => {
         const card = document.createElement("article");
         card.setAttribute("tabindex", "0");
-        card.className = "project-card";
+        card.className = "project-card observe";
 
         card.innerHTML = `
             <h3>${repo.name}</h3>
@@ -184,6 +196,8 @@ function renderProjects(repos) {
         `;
 
         container.appendChild(card);
+
+        observeElements();
     });
 }
 
@@ -201,3 +215,29 @@ function showProjectsError() {
 window.addEventListener("resize", () => {
     document.documentElement.classList.remove("no-view-transition");
 });
+
+// INTERSECTION OBSERVER
+
+const observerOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.15
+};
+
+const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            obs.unobserve(entry.target); // anima uma vez
+        }
+    });
+}, observerOptions);
+
+// Observa todos os elementos marcados
+function observeElements() {
+    const elements = document.querySelectorAll(".observe");
+    elements.forEach(el => observer.observe(el));
+}
+
+// Inicial
+observeElements();

@@ -311,3 +311,29 @@ nav button.active {
     font-size: 0.9rem;
     opacity: 0.8;
 }
+
+/* INTERSECTION OBSERVER ANIMATIONS */
+/* Estado inicial (antes de entrar na viewport) */
+.observe {
+    opacity: 0;
+    transform: translateY(16px);
+}
+
+/* Quando visível */
+.observe.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
+}
+
+/* Redução de movimento — acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+    .observe,
+    .observe.is-visible {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
