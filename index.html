@@ -27,23 +27,56 @@
                 <h2>Front-end developer</h2>
             </div>
 
-            <nav>
+            <nav aria-label="Primary navigation">
                 <ul>
-                    <li><button class="active" data-section="about">About</button></li>
-                    <li><button data-section="experience">Experience</button></li>
-                    <li><button data-section="projects">Projects</button></li>
-                    <li><button data-section="education">Education</button></li>
+                    <li><button
+                            class="active"
+                            data-section="about"
+                            role="tab"
+                            aria-selected="true"
+                            aria-controls="about"
+                        >
+                            About
+                        </button>
+                    </li>
+                    <li><button
+                            data-section="experience"
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="experience"
+                        >
+                            Experience
+                        </button>
+                    </li>
+                    <li><button
+                            data-section="projects"
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="projects"
+                        >
+                            Projects
+                        </button>
+                    </li>
+                    <li><button
+                            data-section="education"
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="education"
+                        >
+                            Education
+                        </button>
+                    </li>
                 </ul>
             </nav>
         </div>
 
         <!-- SOCIAL FIXO -->
         <div class="social">
-            <a href="https://github.com/LuigiRicardo" target="_blank"><img src="assets/img/github_logo.png"></a>
-            <a href="https://www.linkedin.com/in/luigiricardo" target="_blank"><img src="assets/img/linkedin_logo.png"></a>
-            <a href="https://www.instagram.com/luidigdin/" target="_blank"><img src="assets/img/instagram_logo.png"></a>
-            <a href="mailto:luigi.ricardo123@gmail.com"><img src="assets/img/gmail_logo.png"></a>
-            <a href="https://wa.me/5535998896271" target="_blank"><img src="assets/img/whatsapp_logo.png"></a>
+            <a href="https://github.com/LuigiRicardo" target="_blank" aria-label="GitHub profile (opens in new tab)"><img src="assets/img/github_logo.png"></a>
+            <a href="https://www.linkedin.com/in/luigiricardo" target="_blank" aria-label="Linkedin profile (opens in new tab)"><img src="assets/img/linkedin_logo.png"></a>
+            <a href="https://www.instagram.com/luidigdin/" target="_blank"  aria-label="Instagram profile (opens in new tab)"><img src="assets/img/instagram_logo.png"></a>
+            <a href="mailto:luigi.ricardo123@gmail.com" aria-label="redirection to email(opens in new tab)"><img src="assets/img/gmail_logo.png"></a>
+            <a href="https://wa.me/5535998896271" target="_blank" aria-label="redirection to whatsapp(opens in new tab)"><img src="assets/img/whatsapp_logo.png"></a>
         </div>
 
     </header>
@@ -51,45 +84,77 @@
     <!-- CONTENT -->
     <section class="content">
 
-        <div id="about" class="section active">
-                <h2>About</h2>
-                <p>"My name is Luigi Ricardo da Silva. I am a 22-year-old Brazilian student pursuing a degree in Information Systems at UNIFEI. Currently in my second year, I am looking for an opportunity to launch my career in the technology sector as a Developer (Intern, Trainee, or Junior). I have built a solid foundation in web and software development, with proficiency in HTML, CSS, JavaScript, and Python. My technical skillset also extends to data management using SQL and Power BI, alongside cloud fundamentals in AWS. Additionally, I am skilled in GIMP and Photoshop, allowing me to bridge the gap between backend logic and visual presentation. Professionally, I am known for my analytical thinking and collaborative spirit. I thrive in team settings and am deeply committed to continuous learning, ensuring I stay up-to-date with the ever-evolving tech landscape."</p>
-            </div>
+        <div
+        id="about"
+        class="section active"
+        role="tabpanel"
+        tabindex="0"
+        >
+            <h2>About</h2>
+            <p>"My name is Luigi Ricardo da Silva. I am a 22-year-old Brazilian student pursuing a degree in Information Systems at UNIFEI. Currently in my second year, I am looking for an opportunity to launch my career in the technology sector as a Developer (Intern, Trainee, or Junior). I have built a solid foundation in web and software development, with proficiency in HTML, CSS, JavaScript, and Python. My technical skillset also extends to data management using SQL and Power BI, alongside cloud fundamentals in AWS. Additionally, I am skilled in GIMP and Photoshop, allowing me to bridge the gap between backend logic and visual presentation. Professionally, I am known for my analytical thinking and collaborative spirit. I thrive in team settings and am deeply committed to continuous learning, ensuring I stay up-to-date with the ever-evolving tech landscape."</p>
+        </div>
 
-            <div id="experience" class="section">
-                <h2>Experience</h2>
-                <h3>Administrative Assistant Intern | Town Hall, Piranguçu - MG, Brazil | 04/2025 - Present</h3>
-                <ul>
-                    <li>Assist with daily office operations, document organization, and data entry using Microsoft Office.</li>
-                    <li>Proactive Process Automation: Took the initiative to develop automation scripts using Python and SQL. Integrated these with Excel to query the local database, significantly reducing manual data entry time and increasing report accuracy.</li>
-                    <li>IT Support & Troubleshooting: Provided first-level technical support to the team, diagnosing and resolving issues related to network connectivity, hardware performance, and software configuration.</li>
-                </ul>
-                <h3>Chef de Partie | Emporium, Itajubá - MG, Brazil | 02/2024 - 08/2024</h3>
-                <ul>
-                    <li>Team lead: Worked closely with a diverse team to ensure operational excellence, maintaining clear communication channels to coordinate complex workflows effectively.</li>
-                    <li>Standardization & QA: Ensured strict adherence to quality standards and operational protocols, a mindset I now apply to code quality and software testing.</li>
-                    <li>High-Performance Environment: Thrived in a fast-paced, high-pressure environment, requiring rapid decision-making, strict time management, and adaptability to changing scenarios.</li>
-                </ul>
-            </div>
+        <div
+            id="experience"
+            class="section"
+            role="tabpanel"
+            tabindex="0"
+            hidden
+        >
+            <h2>Experience</h2>
+            <h3>Administrative Assistant Intern | Town Hall, Piranguçu - MG, Brazil | 04/2025 - Present</h3>
+            <ul>
+                <li>Assist with daily office operations, document organization, and data entry using Microsoft Office.</li>
+                <li>Proactive Process Automation: Took the initiative to develop automation scripts using Python and SQL. Integrated these with Excel to query the local database, significantly reducing manual data entry time and increasing report accuracy.</li>
+                <li>IT Support & Troubleshooting: Provided first-level technical support to the team, diagnosing and resolving issues related to network connectivity, hardware performance, and software configuration.</li>
+            </ul>
+            <h3>Chef de Partie | Emporium, Itajubá - MG, Brazil | 02/2024 - 08/2024</h3>
+            <ul>
+                <li>Team lead: Worked closely with a diverse team to ensure operational excellence, maintaining clear communication channels to coordinate complex workflows effectively.</li>
+                <li>Standardization & QA: Ensured strict adherence to quality standards and operational protocols, a mindset I now apply to code quality and software testing.</li>
+                <li>High-Performance Environment: Thrived in a fast-paced, high-pressure environment, requiring rapid decision-making, strict time management, and adaptability to changing scenarios.</li>
+            </ul>
+        </div>
 
-            <div id="projects" class="section">
-                <h2>Projects</h2>
-                <div id="projects-list" class="projects-list">
-                <p class="loading">Loading projects...</p>
+        <div
+            id="projects"
+            class="section"
+            role="region"
+            aria-labelledby="projects-title"
+            role="tabpanel"
+            tabindex="0"
+            hidden
+        >
+            <h2>Projects</h2>
+            <div 
+                id="projects-list" 
+                class="projects-list"
+                role="region"
+                aria-live="polite"
+                aria-busy="false"
+            >
+            <p class="loading">Loading projects...</p>
             </div>
+        </div>
 
-            <div id="education" class="section">
-                <h2>Education</h2>
-                <h3>B.Sc. in Information Systems UNIFEI – Federal University of Itajubá | Itajubá - MG, Brazil Expected Graduation: 12/2028</h3>
-                <ul>
-                    <li>Focus on Software Development, Algorithms, Database Management.</li>
-                    <li>Current Status: 2nd Year Undergraduate</li>
-                </ul>
-                <h3>Associate Degree in Gastronomy SENAC | Campos do Jordão - MG, Brazil | Graduated: 2023</h3>
-                <ul>
-                    <li>Key skills gained: Discipline, Workflow organization, Resource and time management.</li>
-                </ul>
-            </div>
+        <div
+            id="education"
+            class="section"
+            role="tabpanel"
+            tabindex="0"
+            hidden
+        >
+            <h2>Education</h2>
+            <h3>B.Sc. in Information Systems UNIFEI – Federal University of Itajubá | Itajubá - MG, Brazil Expected Graduation: 12/2028</h3>
+            <ul>
+                <li>Focus on Software Development, Algorithms, Database Management.</li>
+                <li>Current Status: 2nd Year Undergraduate</li>
+            </ul>
+            <h3>Associate Degree in Gastronomy SENAC | Campos do Jordão - MG, Brazil | Graduated: 2023</h3>
+            <ul>
+                <li>Key skills gained: Discipline, Workflow organization, Resource and time management.</li>
+            </ul>
+        </div>
     </section>
 
 </main>

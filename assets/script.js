@@ -1,79 +1,118 @@
+// CONFIGURAÇÕES GERAIS
+
+const GITHUB_USER = "LuigiRicardo";
+const CACHE_KEY = "github_projects_cache";
+const CACHE_TTL = 1000 * 60 * 60; // 1 hora
+
 const buttons = document.querySelectorAll("nav button");
 const sections = document.querySelectorAll(".section");
-const content = document.querySelector(".content");
 
 let currentSection = document.querySelector(".section.active");
 
-/* Detecta suporte ao View Transition */
-const hasViewTransition = "startViewTransition" in document;
+// SEGURANÇA: estado inicial
 
-/* Classe para fallback */
-if (!hasViewTransition) {
-    document.body.classList.add("no-view-transition");
+if (!currentSection && sections.length > 0) {
+    currentSection = sections[0];
+    currentSection.classList.add("active");
 }
 
-function switchSection(nextSection, clickedButton) {
-    if (nextSection === currentSection) return;
-
-    // Oculta atual
-    currentSection.classList.remove("active");
-
-    // Força reflow (IMPORTANTE para o snapshot)
-    void content.offsetHeight;
-
-    // Mostra próxima
-    nextSection.classList.add("active");
-    currentSection = nextSection;
-
-    buttons.forEach(btn => btn.classList.remove("active"));
-    clickedButton.classList.add("active");
-
-    content.scrollTop = 0;
-}
+// TROCA DE SEÇÕES (COM VIEW TRANSITION + FALLBACK)
 
 buttons.forEach(button => {
     button.addEventListener("click", () => {
         const targetId = button.dataset.section;
         const nextSection = document.getElementById(targetId);
 
-        if (!nextSection) return;
+        if (!nextSection || nextSection === currentSection) return;
 
-        if (hasViewTransition) {
+        const changeSection = () => {
+            // conteúdo
+            currentSection.classList.remove("active");
+            currentSection.setAttribute("hidden", "");
+            currentSection.setAttribute("tabindex", "-1");
+
+            nextSection.classList.add("active");
+            nextSection.removeAttribute("hidden");
+            nextSection.setAttribute("tabindex", "0");
+            nextSection.focus();
+
+            currentSection = nextSection;
+
+
+            // botões
+            buttons.forEach(btn => {
+                btn.classList.remove("active");
+                btn.setAttribute("aria-selected", "false");
+            });
+
+            button.classList.add("active");
+            button.setAttribute("aria-selected", "true");
+
+            // se for Projects, carrega GitHub
+            if (targetId === "projects") {
+                loadProjects();
+            }
+        };
+
+        if (document.startViewTransition) {
             document.startViewTransition(() => {
-                switchSection(nextSection, button);
+                changeSection();
             });
         } else {
-            switchSection(nextSection, button);
+            // Firefox e outros
+            document.documentElement.classList.add("no-view-transition");
+            changeSection();
         }
     });
 });
 
-/* GitHub Projects Fetch */
+// GITHUB API — CACHE
 
-const projectsContainer = document.getElementById("projects-list");
-const GITHUB_USER = "LuigiRicardo";
-const MAX_PROJECTS = 5;
+function getCachedProjects() {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (!cached) return null;
 
-function renderSkeletons(quantity = 4) {
-    projectsContainer.innerHTML = "";
+    try {
+        const parsed = JSON.parse(cached);
+        const expired = Date.now() - parsed.timestamp > CACHE_TTL;
 
-    for (let i = 0; i < quantity; i++) {
-        const skeleton = document.createElement("div");
-        skeleton.className = "project-card skeleton";
+        if (expired) {
+            localStorage.removeItem(CACHE_KEY);
+            return null;
+        }
 
-        skeleton.innerHTML = `
-            <div class="skeleton-title"></div>
-            <div class="skeleton-text"></div>
-            <div class="skeleton-text short"></div>
-            <div class="skeleton-meta"></div>
-        `;
-
-        projectsContainer.appendChild(skeleton);
+        return parsed.data;
+    } catch {
+        localStorage.removeItem(CACHE_KEY);
+        return null;
     }
 }
 
-async function loadGitHubProjects() {
-    renderSkeletons();
+function setCachedProjects(data) {
+    localStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify({
+            data,
+            timestamp: Date.now()
+        })
+    );
+}
+
+// GITHUB API — FETCH PRINCIPAL
+
+async function loadProjects() {
+    const container = document.querySelector("#projects .projects-list");
+    if (!container) return;
+
+    container.setAttribute("aria-busy", "true");
+    renderSkeleton(container);
+
+    const cached = getCachedProjects();
+    if (cached) {
+        renderProjects(cached);
+        container.setAttribute("aria-busy", "false");
+        return;
+    }
 
     try {
         const response = await fetch(
@@ -81,43 +120,84 @@ async function loadGitHubProjects() {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to fetch GitHub repositories");
+            throw new Error(response.status);
         }
 
         const repos = await response.json();
 
-        const filteredRepos = repos
-            .filter(repo => !repo.fork)
-            .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-            .slice(0, MAX_PROJECTS);
-
-        projectsContainer.innerHTML = "";
-
-        filteredRepos.forEach(repo => {
-            const card = document.createElement("article");
-            card.classList.add("project-card");
-
-            card.innerHTML = `
-                <h3>${repo.name}</h3>
-                <p>${repo.description || "No description provided."}</p>
-                <div class="project-meta">
-                    <span>${repo.language || "—"}</span>
-                    <a href="${repo.html_url}" target="_blank" rel="noopener">
-                        View on GitHub
-                    </a>
-                </div>
-            `;
-
-            projectsContainer.appendChild(card);
-        });
+        setCachedProjects(repos);
+        renderProjects(repos);
 
     } catch (error) {
-        projectsContainer.innerHTML = `
-            <p class="error">Unable to load projects at the moment.</p>
-        `;
-        console.error(error);
+        console.error("GitHub API error:", error);
+        showProjectsError();
+    } finally {
+        container.setAttribute("aria-busy", "false");
     }
 }
 
-// Executa ao abrir a aba
-loadGitHubProjects();
+// RENDERIZAÇÃO
+
+function renderSkeleton(container) {
+    container.innerHTML = "";
+
+    for (let i = 0; i < 3; i++) {
+        const skeleton = document.createElement("div");
+        skeleton.className = "project-skeleton";
+        skeleton.setAttribute("aria-hidden", "true");
+        container.appendChild(skeleton);
+    }
+}
+
+function renderProjects(repos) {
+    const container = document.querySelector("#projects .projects-list");
+    container.innerHTML = "";
+
+    if (!repos.length) {
+        container.innerHTML = "<p>No public repositories found.</p>";
+        return;
+    }
+
+    // 🔽 ORDENA POR DATA DE ATUALIZAÇÃO (MAIS RECENTES PRIMEIRO)
+    repos.sort((a, b) => {
+        return new Date(b.updated_at) - new Date(a.updated_at);
+    });
+
+    repos.forEach(repo => {
+        const card = document.createElement("article");
+        card.setAttribute("tabindex", "0");
+        card.className = "project-card";
+
+        card.innerHTML = `
+            <h3>${repo.name}</h3>
+            <p>${repo.description || "No description provided."}</p>
+
+            <div class="meta">
+                ${repo.language ? `<span>${repo.language}</span>` : ""}
+                <span>⭐ ${repo.stargazers_count}</span>
+                <span>🍴 ${repo.forks_count}</span>
+            </div>
+
+            <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">
+                View on GitHub
+            </a>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+function showProjectsError() {
+    const container = document.querySelector("#projects .projects-list");
+    container.innerHTML = `
+        <p class="error" role="alert">
+            Unable to load projects at the moment.
+        </p>
+    `;
+}
+
+// LIMPEZA DE CLASSE (fallback Firefox) 
+
+window.addEventListener("resize", () => {
+    document.documentElement.classList.remove("no-view-transition");
+});
